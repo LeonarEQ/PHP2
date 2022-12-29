@@ -1,13 +1,96 @@
 <?php
-include("persona.php");
+include("Profesor.php");
+session_start();
 
-class Profesor extends Persona
-{
-    public string $curso;
-    function __construct($nombre, $apellidos, $edad, $curso)
-    {
-        parent::__construct($nombre, $apellidos, $edad);
-        $this->curso = $curso;
-    }
+//var_dump($_POST);
+if (isset($_POST["nombre"])) {
+    $nombre = $_POST["nombre"];
+    $apellidos = $_POST["apellidos"];
+    $edad = $_POST["edad"];
+    $curso = $_POST["curso"];
+    $profesor = new Profesor($nombre, $apellidos, $edad, $curso);
     
+    if (isset($_SESSION["profesores"])) {
+        $contador=$_SESSION["contador"];
+        $contador++;
+        $profesor->id=$contador;
+        $_SESSION["contador"]=$contador;
+        array_push($_SESSION["profesores"], $profesor);
+    } else {
+        $_SESSION["profesores"] = array();
+        $_SESSION["contador"]=1;
+        $profesor->id=1;
+        array_push($_SESSION["profesores"], $profesor);
+    }
 }
+if (isset($_SESSION["profesores"])) {
+    $profesores = $_SESSION["profesores"];
+    //var_dump($_SESSION["profesores"]);
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Profesores</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <form action="" method="post">
+        <label for="">Nombre:</label>
+        <input type="text" required name="nombre" placeholder="Introduzca nombre...">
+        <label for="">Apellidos:</label>
+        <input type="text" required name="apellidos" placeholder="Introduzca los apellidos...">
+        <label for="">Edad:</label>
+        <input type="number" name="edad" placeholder="Introduzca edad...">
+        <label for="">Curso:</label>
+        <select name="curso">
+            <option value="html">Curso HTML</option>
+            <option value="css">Curso CSS</option>
+            <option value="js">Curso JS</option>
+        </select>
+        <input type="submit" value="Crear Profesor">
+    </form>
+    <hr>
+    <div class="listado">
+        <h3>Listado profesores</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Edad</th>
+                    <th>Curso</th>
+                    <th>Operaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if (isset($profesores)) {
+                    foreach ($profesores as $key => $profesor) {
+                        //var_dump($profesor);
+                        //echo "<br>";
+                        echo "<tr>
+                            <td>" . $profesor->getNombre() . "</td>
+                            <td>" . $profesor->apellidos . "</td>
+                            <td>".$profesor->edad."</td>
+                            <td>".$profesor->curso."</td>
+                            <td><a href='borrar.php?id=".$profesor->id."'> <i class='fa-solid fa-trash'></i> </a></td>
+                            </tr>";
+                    }
+                }
+                ?>
+                
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>
