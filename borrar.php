@@ -9,6 +9,11 @@ if(isset($_GET["id"])){
             $profesor=$profesores[$i];
             if($profesor->id==$id){
                 unset($profesor[$i]);
+                if ($profesor->id==$id){
+                    unset($profesores[$i]);
+                    $_SESSION["profesores"]=$profesores;
+                    header("Location: ./");
+                }
 
             }
         }
