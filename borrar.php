@@ -5,18 +5,17 @@ if(isset($_GET["id"])){
     if($_SESSION["profesores"]){
         $id=$_GET["id"];
         $profesores=$_SESSION["profesores"];
-        for ($i=0; i < count($profesores); $i++){
-            $profesor=$profesores[$i];
+       foreach ($profesores as $i => $profesor) {             
             if($profesor->id==$id){
-                unset($profesor[$i]);
-                if ($profesor->id==$id){
-                    unset($profesores[$i]);
-                    $_SESSION["profesores"]=$profesores;
-                    header("Location: ./");
-                }
-
+                unset($profesores[$i]);
+                $_SESSION["profesores"]=$profesores;
+                header("Location: ./");
             }
         }
     }
+    else{
+        header("Location: ./");
+    }
+}else{
+    header("Location: ./");
 }
-else{}
