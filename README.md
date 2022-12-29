@@ -2,7 +2,7 @@
 Ejercicios de PHP
 
 
-<?php
+/*<?php
 include("persona.php");
 
 class Profesor extends Persona
@@ -16,4 +16,4 @@ class Profesor extends Persona
     
 }
 
-/*Probando/*
+Probando/*
